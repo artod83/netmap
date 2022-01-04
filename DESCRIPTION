@@ -4,10 +4,24 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Matteo", "Dimai", , "matteo.dimai@phd.units.it", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-1126-5234"))
-Description: What the package does (one paragraph).
-License: MIT + file LICENSE
+Description: Represent 'network' objects whose vertices can be represented by features in an 'sf' object as a network graph surmising a 'sf' plot. Fits into 'ggplot2' grammar.
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 URL: https://github.com/artod83/netmap
 BugReports: https://github.com/artod83/netmap/issues
+Imports: 
+    ggnetwork,
+    network,
+    rlang,
+    sf
+Suggests: 
+    rmarkdown,
+    knitr,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)
+LazyData: true

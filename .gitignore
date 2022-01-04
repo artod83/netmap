@@ -3,3 +3,6 @@
 .Rdata
 .httr-oauth
 .DS_Store
+inst/doc
+piano di lavoro
+script di prova per funzioni, import ecc.R

@@ -1,0 +1,33 @@
+---
+title: "netmap: representing spatial networks with ggplot2"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{netmap}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(netmap)
+```
+Relational data sets can be about units that have an inherent spatial aspect - trade networks between regions, relationships between users for which location data is available, traffic relationships between areas and so on. Network visualization is *hard* and most methods to visualize a network focus on displaying vertices and edges (loosely speaking, units of the network and relationships between them, respectively) in a way that highlights the properties of the network itself. When vertices already have a spatial component, though, a "natural" visualization is just to plot the vertices in their spatial position and display the edges between them.
+The `netmap` package doesn't attempt to reinvent the wheel, so it uses both the `sf` package to handle spatial data files (from shapefiles to KML files to whatnot) and the `ggnetwork` package to plot network data using `ggplot2`'s grammar of graphics.
+The main function is `ggnetmap`. It will need both a `network` object and a `sf` object and it will produce a data frame (a *fortified* data frame, as produced by `fortify.network` in `ggnetwork`). It will most commonly used like this (`net` is a `network` object, `map` a `sf` object, `lkp_tbl` is a lookup table, in case there is no direct match between the two objects, `m_name` and `n_name` are the variable names for linking the two objects):
+
+```{r plot_example, eval=FALSE}
+
+fortified_df=ggnetmap(net, map, lkp_tbl, m_name="spatial_id", n_name="vertex.names")
+ggplot() +
+  geom_sf(data=map) + #this will be the map on which the network will be overlayed
+  geom_edges(data=fortnet, aes(x=x,y=y, xend=xend, yend=yend), colour="red") + #network edges
+  geom_nodes(data=fortnet, aes(x=x,y=y)) + #network vertices
+  geom_nodetext(data=fortnet, aes(x=x,y=y, label = spatial_id), fontface = "bold") + #vertex labels
+  theme_blank()
+```

@@ -1,15 +1,34 @@
-#' Checks which vertices of a network object can be represented with features of a sf object
+#' Link a network and a map
 #'
-#' @param m object of class sf
-#' @param n object of class network
-#' @param n_name name of the vertex attribute to use for the link, defaults to vertex.names
-#' @param m_name name of the map field to use for the link
+#' Checks which vertices of a \code{network} object can be represented with
+#' features of a \code{sf} object.
 #'
-#' @return on success a list with two vectors, one of features in m present in n, the other of nodes in n present in m, -1 on error
-#' @export
+#' @param m Object of class \code{sf}.
+#' @param n Object of class \code{network}.
+#' @param n_name Name of the vertex attribute to use for the link, defaults to
+#' \code{vertex.names}.
+#' @param m_name Name of the map field to use for the link.
+#'
+#' @return On success a list with two vectors, one of features in \code{m}
+#' present in \code{n}, the other of nodes in \code{n} present in \code{m},
+#' \code{-1} on error.
 #'
 #' @examples
+#' # net=network(matrix(c(0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0), nrow=4, byrow=TRUE))
+#' # network::set.vertex.attribute(net, "name", value=c("a", "b", "c", "d"))
+#' # wkb = structure(list("01010000204071000000000000801A064100000000AC5C1641",
+#' # "01010000204071000000000000801A084100000000AC5C1441",
+#' # "01010000204071000000000000801A044100000000AC5C1241",
+#' # "01010000204071000000000000801A024100000000AC5C1841"), class = "WKB")
+#' # map=st_sf(id=c("a", "b", "c", "d"), st_as_sfc(wkb, EWKB=TRUE))
+#' # link_network_map(map, net, "id", "name")
 link_network_map <- function(m, n, m_name, n_name="vertex.names"){
+  if(!rlang::is_installed("network")) {
+    stop(
+      "Package \"network\" must be installed to use this function.",
+      call. = FALSE
+    )
+  }
   #classes
   if(!is_network(n)) return(-1)
   if(!is_sf(m)) return(-1)
@@ -24,26 +43,44 @@ link_network_map <- function(m, n, m_name, n_name="vertex.names"){
     return(-1)
   }
   #main check
-  res1=n %v% n_name %in% get(m_name, pos=m)
-  res2=get(m_name, pos=m)[get(m_name, pos=m) %in% (n %v% n_name)]
+  res1=network::get.vertex.attribute(n, n_name)[network::get.vertex.attribute(n, n_name) %in% get(m_name, pos=m)]
+  res2=get(m_name, pos=m)[get(m_name, pos=m) %in% (network::get.vertex.attribute(n, n_name))]
   return(list(m=res2, n=res1))
 }
 
-#same as link_network_map, but with a lookup table that maps m_name to n_name. by default m_name and
-# n_name first and second column of lkp, respectively
-#' Checks which vertices of a network object can be represented with features of a sf object with a lookup table
+#' Link a network and a map with a lookup table
 #'
-#' @param m object of class sf
-#' @param n object of class network
-#' @param lkp look-up table, a data frame
-#' @param m_name optional character, name of field in m and of column in lkp
-#' @param n_name optional character, name of vertex attribute in n and of column in lkp
+#' Checks which vertices of a network object can be represented with features of
+#' a sf object with a lookup table.
 #'
-#' @return on success a list with two vectors, one of features in m present both in the lookup table and in n, the other of nodes in n present both in the lookup table and in m, -1 on error
-#' @export
+#' @param lkp Lookup table, a \code{data.frame}.
+#' @param m_name Optional character, name of field in \code{m} and of column in
+#' \code{lkp} (first column of \code{lkp} is used if \code{NULL}).
+#' @param n_name Optional character, name of vertex attribute in \code{n} and of
+#' column in \code{lkp}  (second column of \code{lkp} is used if \code{NULL}).
+#' @inheritParams link_network_map
+#'
+#' @return On success a list with two vectors, one of features in \code{m} present
+#' both in the lookup table and in \code{n}, the other of nodes in \code{n} present
+#' both in the lookup table and in \code{m}, \code{-1} on error.
 #'
 #' @examples
+#' # net=network(matrix(c(0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0), nrow=4, byrow=TRUE))
+#' # network::set.vertex.attribute(net, "name", value=c("a", "b", "c", "d"))
+#' # wkb = structure(list("01010000204071000000000000801A064100000000AC5C1641",
+#' # "01010000204071000000000000801A084100000000AC5C1441",
+#' # "01010000204071000000000000801A044100000000AC5C1241",
+#' # "01010000204071000000000000801A024100000000AC5C1841"), class = "WKB")
+#' # map=st_sf(id=c("a1", "b2", "c3", "d4"), st_as_sfc(wkb, EWKB=TRUE))
+#' # lkptbl=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", "c", "d"))
+#' # link_network_map2(map, net, lkptbl, "id", "name")
 link_network_map2 <- function(m, n, lkp, m_name=NULL, n_name=NULL){
+  if(!rlang::is_installed("network")) {
+    stop(
+      "Package \"network\" must be installed to use this function.",
+      call. = FALSE
+    )
+  }
   #classes
   if(!is_network(n)) return(-1)
   if(!is_sf(m)) return(-1)
@@ -58,29 +95,37 @@ link_network_map2 <- function(m, n, lkp, m_name=NULL, n_name=NULL){
 
   #do attributes/fields exist?
   if (!exists(m_name, m)) {
-    message(paste0("Field ", m_name, ", either set explicitly or inherited from lookup table, doesn't exist in sf object"))
+    message(paste0("Field ", m_name, ", either set explicitly or inherited from
+                   lookup table, doesn't exist in sf object"))
     return(-1)
   }
   if (is.null(network::get.vertex.attribute(n, n_name, null.na=FALSE))) {
-    message(paste0("Vertex attribute ", n_name, ", either set explicitly or inherited from lookup table, doesn't exist in network object"))
+    message(paste0("Vertex attribute ", n_name, ", either set explicitly or
+                   inherited from lookup table, doesn't exist in network object"))
     return(-1)
   }
 
   #number of features present in the lookup table and in the network
-  res=get(m_name, pos=m)[get(m_name, pos=m) %in% get(m_name, pos=lkp)[get(n_name, pos=lkp) %in% (n %v% n_name)]]
-  res2=(n %v% n_name)[(n %v% n_name) %in% get(n_name, pos=lkp)[get(m_name, pos=lkp) %in% get(m_name, pos=m)]]
+  res=get(m_name, pos=m)[get(m_name, pos=m)
+                        %in% get(m_name, pos=lkp)[get(n_name, pos=lkp)
+                        %in% network::get.vertex.attribute(n, n_name)]]
+  res2=network::get.vertex.attribute(n,
+      n_name)[network::get.vertex.attribute(n, n_name) %in% get(n_name,
+      pos=lkp)[get(m_name, pos=lkp) %in% get(m_name, pos=m)]]
   return(list(m=res, n=res2))
 }
 
 
-
-#' Checks whether an object is a network object, returns message if it's not
+#' Is object a network?
 #'
-#' @param n object of class network
+#' Checks whether an object is a \code{network} object, returns message if it's not
 #'
-#' @return TRUE if object of class network, FALSE otherwise
+#' @inheritParams link_network_map
 #'
-#' @examples is_network(network(1)) #TRUE
+#' @return \code{TRUE} if object of class \code{network}, \code{FALSE} otherwise.
+#'
+#' @examples
+#' # is_network(network(1)) #TRUE
 is_network <- function(n){
   if(!network::is.network(n)) {
     message(paste0("Invalid network object supplied"))
@@ -90,13 +135,21 @@ is_network <- function(n){
   }
 }
 
-#' Checks whether an object is an sf object, returns message if it's not
+#' Is object a map?
 #'
-#' @param m object of class sf
+#' Checks whether an object is an \code{sf} object, returns message if it's not
 #'
-#' @return TRUE if object of classes sf and data.frame, FALSE otherwise
+#' @inheritParams link_network_map
+#'
+#' @return \code{TRUE} if object of classes \code{sf} and \code{data.frame}, \code{FALSE} otherwise.
 #'
 #' @examples
+#' # wkb = structure(list("01010000204071000000000000801A064100000000AC5C1641",
+#' # "01010000204071000000000000801A084100000000AC5C1441",
+#' # "01010000204071000000000000801A044100000000AC5C1241",
+#' # "01010000204071000000000000801A024100000000AC5C1841"), class = "WKB")
+#' # map=st_sf(id=c("a1", "b2", "c3", "d4"), st_as_sfc(wkb, EWKB=TRUE))
+#' # is_sf(map) #TRUE
 is_sf <- function(m){
   clsf=class(m)
   if(!(length(clsf)==2 && clsf[1] == "sf" && clsf[2] == "data.frame")) {
@@ -107,16 +160,26 @@ is_sf <- function(m){
   }
 }
 
-#' Checks whether a data frame is a valid lookup table
+#' Is data frame a lookup table?
 #'
-#' @param lkp a data frame
-#' @param m_name optional, a character string with the name of the column in lkp to check against m
-#' @param n_name optional, a character string with the name of the column in lkp to check against n
+#' Checks whether a \code{data.frame} is a valid lookup table.
 #'
-#' @return FALSE on error, a vector with m_name and n_name if the lookup table is valid
-#' @export
+#' @param lkp A \code{data.frame}.
+#' @param m_name Optional, a \code{character} string with the name of the column
+#' in \code{lkp} to check against \code{m}.
+#' @param n_name Optional, a \code{character} string with the name of the column
+#' in \code{lkp} to check against \code{n}.
+#'
+#' @return \code{FALSE} on error, a vector with \code{m_name} and \code{n_name}
+#' if the lookup table is valid.
 #'
 #' @examples
+#' # lkptbl=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", "c", "d"))
+#' # is_lookup_table(lkptbl) #valid
+#' # lkptbl2=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", NA, "d"))
+#' # is_lookup_table(lkptbl2) #invalid, NA
+#' # lkptbl3=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", "b", "d"))
+#' # is_lookup_table(lkptbl3) #invalid, duplicates
 is_lookup_table <- function(lkp, m_name=NULL, n_name=NULL) {
   #are table and variable names valid?
   if(!is.data.frame(lkp) || ncol(lkp)<2) return(FALSE)
@@ -134,10 +197,10 @@ is_lookup_table <- function(lkp, m_name=NULL, n_name=NULL) {
   #are there empty cells? (NA, NULL or empty strings)
   check=sum(is.na(get(m_name, lkp))) +
     sum(is.null(get(m_name, lkp))) +
-    sum(nchar(as.character(get(m_name, lkp)))<1) +
+    sum(nchar(as.character(get(m_name, lkp)), allowNA=TRUE)<1, na.rm=TRUE) +
     sum(is.na(get(n_name, lkp))) +
     sum(is.null(get(n_name, lkp))) +
-    sum(nchar(as.character(get(n_name, lkp)))<1)
+    sum(nchar(as.character(get(n_name, lkp)), allowNA=TRUE)<1, na.rm=TRUE)
   if (check>0) {
     message("Empty cells in lookup table")
     return(FALSE)
