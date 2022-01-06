@@ -7,7 +7,8 @@
 network.layout.extract_coordinates(n, layout.par)
 }
 \arguments{
-\item{n}{A \code{network} object.}
+\item{n}{A \code{network} or \code{igraph} object. Not used, only for
+compatibility with \code{\link[network]{plot.network}}.}
 
 \item{layout.par}{A \code{list} of layout parameters (the only one implemented is
 \code{layout.par$sf}, an \code{sf} object whose rows match the order of
@@ -18,7 +19,8 @@ A matrix whose rows contain the x,y coordinates of the vertices of \code{n}.
 }
 \description{
 Custom layout for \code{\link[network]{plot.network}}, extracting coordinates
-of vertices from a \code{sf} object.
+of vertices from a \code{sf} object. Its result can be used by
+\code{\link[igraph]{plot.igraph}} as well.
 }
 \examples{
 # net=network(matrix(c(0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0), nrow=4, byrow=TRUE))

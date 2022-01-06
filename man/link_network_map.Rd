@@ -9,7 +9,7 @@ link_network_map(m, n, m_name, n_name = "vertex.names")
 \arguments{
 \item{m}{Object of class \code{sf}.}
 
-\item{n}{Object of class \code{network}.}
+\item{n}{Object of class \code{network} or \code{igraph}.}
 
 \item{m_name}{Name of the map field to use for the link.}
 

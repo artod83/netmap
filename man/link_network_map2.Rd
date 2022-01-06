@@ -9,7 +9,7 @@ link_network_map2(m, n, lkp, m_name = NULL, n_name = NULL)
 \arguments{
 \item{m}{Object of class \code{sf}.}
 
-\item{n}{Object of class \code{network}.}
+\item{n}{Object of class \code{network} or \code{igraph}.}
 
 \item{lkp}{Lookup table, a \code{data.frame}.}
 

@@ -15,7 +15,7 @@ ggnetmap(
 )
 }
 \arguments{
-\item{n}{A \code{network} object.}
+\item{n}{A \code{network} or \code{igraph} object.}
 
 \item{m}{A \code{sf} object.}
 
@@ -37,16 +37,17 @@ A data frame, produced by \code{\link[ggnetwork]{fortify}}, which can be
 used as data source in \code{ggplot2} graphs.
 }
 \description{
-Link a \code{network} and a \code{sf} object in a \code{data.frame} for
-subsequent representation on a plot using \code{ggplot2}.
+Link a \code{network} or \code{igraph} and a \code{sf} object in a
+\code{data.frame} for subsequent representation on a plot using \code{ggplot2}.
 }
 \details{
-Using a \code{network} and a \code{sf} object as inputs, with an optional
-lookup table (a \code{data.frame}) in case the IDs don't match, produces a
-\code{data.frame} that can be used with \code{ggnetwork}'s \code{\link[ggnetwork]{geom_edges}}
-and \code{\link[ggnetwork]{geom_nodes}} functions to represent the network as overlayed on a
-\code{sf} object in a \code{ggplot2} graph. Only vertices with a corresponding
-feature in the \code{sf} object are included.
+Using a \code{network} or \code{igraph} and a \code{sf} object as inputs,
+with an optional lookup table (a \code{data.frame}) in case the IDs don't
+match, produces a \code{data.frame} that can be used with \code{ggnetwork}'s
+\code{\link[ggnetwork]{geom_edges}} and \code{\link[ggnetwork]{geom_nodes}}
+functions to represent the network as overlayed on a \code{sf} object in a
+\code{ggplot2} graph. Only vertices with a corresponding feature in the
+\code{sf} object are included.
 }
 \examples{
 # net=network(matrix(c(0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0), nrow=4, byrow=TRUE))

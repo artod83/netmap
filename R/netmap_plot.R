@@ -1,10 +1,11 @@
 #' Plot a network object with a layout based on an \code{sf} object
 #'
-#' Wrapper for \code{\link[network]{plot.network}} using a custom network layout that extracts
+#' Wrapper for \code{\link[network]{plot.network}} and
+#' \code{\link[igraph]{plot.igraph}} using a custom network layout that extracts
 #' coordinates of centroids from a \code{sf} object. Only vertices with a
 #' corresponding feature are plotted.
 #'
-#' @param n A \code{network} object.
+#' @param n A \code{network} or \code{igraph} object.
 #' @param m A \code{sf} object.
 #' @param lkp An optional lookup table.
 #' @param m_name Optional \code{character}, name of field in \code{m} and of
@@ -34,12 +35,19 @@ netmap_plot <- function(
   n_name="vertex.names",
   ...
 ){
-  if(!rlang::is_installed(c("network", "sf"))) {
+  if(!rlang::is_installed(c("sf"))) {
     stop(
-      "Packages \"network\", and \"sf\" must be installed to use this function.",
+      "Package \"sf\" must be installed to use this function.",
+      call. = FALSE
+    )
+  } else if(!rlang::is_installed("network") && !rlang::is_installed("igraph")) {
+    stop(
+      "Either package \"network\" or package \"igraph\" must be installed to use
+      this function.",
       call. = FALSE
     )
   }
+
   #check whether network and sf objects can be linked
   if(is.null(lkp) && !is.null(m_name)) {
     linked=link_network_map(m, n, m_name, n_name)
@@ -64,15 +72,23 @@ netmap_plot <- function(
   m2=m2[match(features_ordered, get(m_name, pos=m2)),]
 
   #plot
-  network::plot.network(n2, mode="extract_coordinates", layout.par=list(sf=m2), ...)
+  if(class(n) == "network") {
+    network::plot.network(n2, mode="extract_coordinates", layout.par=list(sf=m2), ...)
+  } else if (class(n) == "igraph") {
+    igraph::plot.igraph(n2, layout=network.layout.extract_coordinates(n2, layout.par=list(sf=m2)))
+  } else {
+    stop("Network object is not of class network or igraph")
+  }
 }
 
 #' Layout of a network based on a \code{sf} object
 #'
 #' Custom layout for \code{\link[network]{plot.network}}, extracting coordinates
-#' of vertices from a \code{sf} object.
+#' of vertices from a \code{sf} object. Its result can be used by
+#' \code{\link[igraph]{plot.igraph}} as well.
 #'
-#' @param n A \code{network} object.
+#' @param n A \code{network} or \code{igraph} object. Not used, only for
+#' compatibility with \code{\link[network]{plot.network}}.
 #' @param layout.par A \code{list} of layout parameters (the only one implemented is
 #' \code{layout.par$sf}, an \code{sf} object whose rows match the order of
 #' vertices in \code{n}).
@@ -98,7 +114,7 @@ network.layout.extract_coordinates <- function(
   } else {
     m=layout.par$sf
   }
-  if(!is_network(n)) stop("The network is not a network object")
+  if(!is_network(n)) stop("The network is not a network or igraph object")
   coords=do.call(rbind, sf::st_geometry(suppressWarnings(sf::st_centroid(m))))
   return(coords)
 }

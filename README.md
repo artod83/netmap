@@ -7,8 +7,7 @@
 <!-- badges: end -->
 
 Netmap is a package that provides visualizations of network objects
-(made by statnet and igraph) on geographical maps, imported through
-rgdal.
+(made by statnet and igraph) on geographical maps, imported through sf.
 
 ## Installation
 

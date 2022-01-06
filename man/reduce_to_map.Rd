@@ -7,18 +7,20 @@
 reduce_to_map(n, link, n_name)
 }
 \arguments{
-\item{n}{A \code{network} object.}
+\item{n}{A \code{network} or \code{igraph} object.}
 
 \item{link}{A vector with the identifiers of the vertices to keep.}
 
 \item{n_name}{Name of the vertex attribute to filter on.}
 }
 \value{
-A \code{network} object with only the vertices listed in \code{link}.
+A \code{network} or \code{igraph} object with only the vertices
+listed in \code{link}.
 }
 \description{
-Removes vertices from a \code{network} object which are not present in the
-link vector produced by \code{\link{link_network_map}} or \code{\link{link_network_map2}}.
+Removes vertices from a \code{network} or \code{igraph} object which are not
+present in the link vector produced by \code{\link{link_network_map}} or
+\code{\link{link_network_map2}}.
 }
 \examples{
 # net=network(matrix(c(0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0), nrow=4, byrow=TRUE))

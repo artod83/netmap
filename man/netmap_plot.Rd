@@ -7,7 +7,7 @@
 netmap_plot(n, m, lkp = NULL, m_name = NULL, n_name = "vertex.names", ...)
 }
 \arguments{
-\item{n}{A \code{network} object.}
+\item{n}{A \code{network} or \code{igraph} object.}
 
 \item{m}{A \code{sf} object.}
 
@@ -25,7 +25,8 @@ and of column in \code{lkp}.}
 A plot of the network.
 }
 \description{
-Wrapper for \code{\link[network]{plot.network}} using a custom network layout that extracts
+Wrapper for \code{\link[network]{plot.network}} and
+\code{\link[igraph]{plot.igraph}} using a custom network layout that extracts
 coordinates of centroids from a \code{sf} object. Only vertices with a
 corresponding feature are plotted.
 }

@@ -13,9 +13,11 @@ URL: https://github.com/artod83/netmap
 BugReports: https://github.com/artod83/netmap/issues
 Imports: 
     ggnetwork,
+    igraph,
     network,
     rlang,
-    sf
+    sf,
+    sna
 Suggests: 
     rmarkdown,
     knitr,

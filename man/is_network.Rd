@@ -7,13 +7,14 @@
 is_network(n)
 }
 \arguments{
-\item{n}{Object of class \code{network}.}
+\item{n}{Object of class \code{network} or \code{igraph}.}
 }
 \value{
 \code{TRUE} if object of class \code{network}, \code{FALSE} otherwise.
 }
 \description{
-Checks whether an object is a \code{network} object, returns message if it's not
+Checks whether an object is a \code{network} object or an \code{igraph} object,
+returns message if it's not
 }
 \examples{
 # is_network(network(1)) #TRUE
