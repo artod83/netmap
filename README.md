@@ -6,8 +6,13 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Netmap is a package that provides visualizations of network objects
-(made by statnet and igraph) on geographical maps, imported through sf.
+Netmap is a package that aids in the visualizations of network objects
+(made with the or the package) on geographical maps, imported through .
+Vertices in the network are linked with features in the object either
+directly if they share a common attribute or by an optional look-up
+table. The package either creates data frames that can be used in a plot
+or adds to features attributes like centrality indices or variables
+representing connections to a certain node.
 
 ## Installation
 
@@ -21,36 +26,62 @@ devtools::install_github("artod83/netmap")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+We take a network object, where each vertex is a geographical object,
+and overlay the network on the map. I.e. a network could represent
+direct bus routes between cities. We can plot the network as overlayed
+on the complete map or just the 4 cities in the network The Friuli
+Venezia Giulia region in northeastern Italy has four major cities: from
+east to west, Trieste, Gorizia, Udine and Pordenone. Let’s imagine that
+we want to plot a network with these cities as vertices and edges
+between Trieste and Gorizia, Gorizia and Udine, Trieste and Udine and
+Udine and Pordenone.
 
 ``` r
-#library(netmap)
-## basic example code
+library(ggplot2)
+library(netmap)
+data(fvgmap)
+routes=network::network(matrix(c(0, 1, 1, 0, 
+                                 1, 0, 1, 0, 
+                                 1, 1, 0, 1, 
+                                 0, 0, 1, 0), nrow=4, byrow=TRUE))
+network::set.vertex.attribute(routes, "names", value=c("Trieste", "Gorizia", "Udine", "Pordenone"))
+routes_df=netmap::ggnetmap(routes, fvgmap, m_name="Comune", n_name="names")
+ggplot() +
+  geom_sf(data=fvgmap) +
+  geom_edges(data=routes_df, aes(x=x,y=y, xend=xend, yend=yend), colour="red") +
+  geom_nodes(data=routes_df, aes(x=x,y=y)) +
+  geom_nodetext(data=routes_df, aes(x=x,y=y, label = Comune), fontface = "bold") +
+  theme_blank()
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+<img src="man/figures/netmap-1.png" width="100%" />
+
+It is also possible to plot a sf object with centrality measures of the
+network:
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+routes2=network::network(matrix(c(0, 1, 1, 0, 0, 1 ,
+                                 1, 0, 1, 0, 0, 1,
+                                 1, 1, 0, 1, 1, 1,
+                                 0, 0, 1, 0, 1, 1,
+                                 0, 0, 1, 1, 0, 0,
+                                 1, 1, 1, 1, 0, 0), nrow=6, byrow=TRUE))
+network::set.vertex.attribute(routes2, "names", 
+                              value=c("Trieste", "Gorizia", "Udine", "Pordenone", 
+                                      "Tolmezzo", "Grado"))
+lkpt=data.frame(Pro_com=c(32006, 31007, 30129, 93033, 30121, 31009), 
+                names=c("Trieste", "Gorizia", "Udine", "Pordenone", "Tolmezzo", 
+                        "Grado"))
+routes2_df=netmap::ggnetmap(routes2, fvgmap, lkpt, m_name="Pro_com", n_name="names")
+map_centrality=netmap::ggcentrality(routes2, fvgmap, lkpt, m_name="Pro_com", 
+                                    n_name="names", par.deg=list(gmode="graph"))
+ggplot() +
+  geom_sf(data=fvgmap) +
+  geom_sf(data=map_centrality, aes(fill=degree)) +
+  geom_edges(data=routes2_df, aes(x=x,y=y, xend=xend, yend=yend), colour="red") +
+  geom_nodes(data=routes2_df, aes(x=x,y=y)) +
+  geom_nodetext(data=routes2_df, aes(x=x,y=y, label = names), fontface = "bold") +
+  theme_blank()
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+<img src="man/figures/netmap-2.png" width="100%" />

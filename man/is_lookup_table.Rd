@@ -24,9 +24,9 @@ Checks whether a \code{data.frame} is a valid lookup table.
 }
 \examples{
 # lkptbl=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", "c", "d"))
-# is_lookup_table(lkptbl) #valid
+# netmap::is_lookup_table(lkptbl) #valid
 # lkptbl2=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", NA, "d"))
-# is_lookup_table(lkptbl2) #invalid, NA
+# netmap::is_lookup_table(lkptbl2) #invalid, NA
 # lkptbl3=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", "b", "d"))
-# is_lookup_table(lkptbl3) #invalid, duplicates
+# netmap::is_lookup_table(lkptbl3) #invalid, duplicates
 }

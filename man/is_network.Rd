@@ -17,5 +17,5 @@ Checks whether an object is a \code{network} object or an \code{igraph} object,
 returns message if it's not
 }
 \examples{
-# is_network(network(1)) #TRUE
+# is_network(network::network(1)) #TRUE
 }
