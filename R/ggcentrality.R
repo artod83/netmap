@@ -1,9 +1,3 @@
-#function to plot on a sf object the following indices of centrality:
-# degree
-# betweenness
-# closeness
-# + indicator variable "connected to area X y/n" (coloring area X in a different color?) - this could go in another function actually
-
 #' Calculate centrality indices for vertices linked to a sf object
 #'
 #' Given a \code{sf} object with features that can be linked to a \code{network}
