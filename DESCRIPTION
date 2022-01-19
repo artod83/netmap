@@ -1,10 +1,10 @@
 Package: netmap
 Title: Represent Network Objects on a Map
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person("Matteo", "Dimai", , "matteo.dimai@phd.units.it", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-1126-5234"))
-Description: Represent 'network' objects whose vertices can be represented by features in an 'sf' object as a network graph surmising a 'sf' plot. Fits into 'ggplot2' grammar.
+Description: Represent 'network' or 'igraph' objects whose vertices can be represented by features in an 'sf' object as a network graph surmising a 'sf' plot. Fits into 'ggplot2' grammar.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

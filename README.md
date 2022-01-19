@@ -48,9 +48,9 @@ network::set.vertex.attribute(routes, "names", value=c("Trieste", "Gorizia", "Ud
 routes_df=netmap::ggnetmap(routes, fvgmap, m_name="Comune", n_name="names")
 ggplot() +
   geom_sf(data=fvgmap) +
-  geom_edges(data=routes_df, aes(x=x,y=y, xend=xend, yend=yend), colour="red") +
-  geom_nodes(data=routes_df, aes(x=x,y=y)) +
-  geom_nodetext(data=routes_df, aes(x=x,y=y, label = Comune), fontface = "bold") +
+  ggnetwork::geom_edges(data=routes_df, aes(x=x,y=y, xend=xend, yend=yend), colour="red") +
+  ggnetwork::geom_nodes(data=routes_df, aes(x=x,y=y)) +
+  ggnetwork::geom_nodetext(data=routes_df, aes(x=x,y=y, label = Comune), fontface = "bold") +
   theme_blank()
 ```
 
@@ -78,9 +78,9 @@ map_centrality=netmap::ggcentrality(routes2, fvgmap, lkpt, m_name="Pro_com",
 ggplot() +
   geom_sf(data=fvgmap) +
   geom_sf(data=map_centrality, aes(fill=degree)) +
-  geom_edges(data=routes2_df, aes(x=x,y=y, xend=xend, yend=yend), colour="red") +
-  geom_nodes(data=routes2_df, aes(x=x,y=y)) +
-  geom_nodetext(data=routes2_df, aes(x=x,y=y, label = names), fontface = "bold") +
+  ggnetwork::geom_edges(data=routes2_df, aes(x=x,y=y, xend=xend, yend=yend), colour="red") +
+  ggnetwork::geom_nodes(data=routes2_df, aes(x=x,y=y)) +
+  ggnetwork::geom_nodetext(data=routes2_df, aes(x=x,y=y, label = names), fontface = "bold", colour="") +
   theme_blank()
 ```
 

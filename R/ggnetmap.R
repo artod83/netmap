@@ -82,7 +82,7 @@ ggnetmap <- function(
 #' @inheritParams ggnetmap
 #'
 #' @return A list with a \code{network} or \code{igraph} object with only the
-#' vertices present in the \code{sf} object as th first element and a list
+#' vertices present in the \code{sf} object as the first element and a list
 #' with two vectors, one of features in \code{m} present
 #' both in the lookup table and in \code{n}, the other of nodes in \code{n}
 #' present both in the lookup table and in \code{m}
