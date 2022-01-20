@@ -15,11 +15,3 @@ is_sf(m)
 \description{
 Checks whether an object is an \code{sf} object, returns message if it's not
 }
-\examples{
-wkb = structure(list("01010000204071000000000000801A064100000000AC5C1641",
-"01010000204071000000000000801A084100000000AC5C1441",
-"01010000204071000000000000801A044100000000AC5C1241",
-"01010000204071000000000000801A024100000000AC5C1841"), class = "WKB")
-map=sf::st_sf(id=c("a1", "b2", "c3", "d4"), sf::st_as_sfc(wkb, EWKB=TRUE))
-# is_sf(map) #TRUE
-}

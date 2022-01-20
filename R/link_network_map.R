@@ -13,15 +13,6 @@
 #' present in \code{n}, the other of nodes in \code{n} present in \code{m},
 #' \code{-1} on error.
 #'
-#' @examples
-#' net=network::network(matrix(c(0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0), nrow=4, byrow=TRUE))
-#' network::set.vertex.attribute(net, "name", value=c("a", "b", "c", "d"))
-#' wkb = structure(list("01010000204071000000000000801A064100000000AC5C1641",
-#' "01010000204071000000000000801A084100000000AC5C1441",
-#' "01010000204071000000000000801A044100000000AC5C1241",
-#' "01010000204071000000000000801A024100000000AC5C1841"), class = "WKB")
-#' map=sf::st_sf(id=c("a", "b", "c", "d"), sf::st_as_sfc(wkb, EWKB=TRUE))
-#' # netmap::link_network_map(map, net, "id", "name")
 link_network_map <- function(m, n, m_name, n_name="vertex.names"){
   if(!rlang::is_installed("network") && !rlang::is_installed("igraph")) {
     stop(
@@ -79,16 +70,6 @@ link_network_map <- function(m, n, m_name, n_name="vertex.names"){
 #' both in the lookup table and in \code{n}, the other of nodes in \code{n} present
 #' both in the lookup table and in \code{m}, \code{-1} on error.
 #'
-#' @examples
-#' net=network::network(matrix(c(0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0), nrow=4, byrow=TRUE))
-#' network::set.vertex.attribute(net, "name", value=c("a", "b", "c", "d"))
-#' wkb = structure(list("01010000204071000000000000801A064100000000AC5C1641",
-#' "01010000204071000000000000801A084100000000AC5C1441",
-#' "01010000204071000000000000801A044100000000AC5C1241",
-#' "01010000204071000000000000801A024100000000AC5C1841"), class = "WKB")
-#' map=sf::st_sf(id=c("a1", "b2", "c3", "d4"), sf::st_as_sfc(wkb, EWKB=TRUE))
-#' lkptbl=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", "c", "d"))
-#' # netmap::link_network_map2(map, net, lkptbl, "id", "name")
 link_network_map2 <- function(m, n, lkp, m_name=NULL, n_name=NULL){
   if(!rlang::is_installed("network")) {
     stop(
@@ -161,8 +142,6 @@ link_network_map2 <- function(m, n, lkp, m_name=NULL, n_name=NULL){
 #'
 #' @return \code{TRUE} if object of class \code{network}, \code{FALSE} otherwise.
 #'
-#' @examples
-#' # is_network(network::network(1)) #TRUE
 is_network <- function(n){
   if(!network::is.network(n) && !igraph::is.igraph(n)) {
     message(paste0("Invalid network/igraph object supplied"))
@@ -180,13 +159,6 @@ is_network <- function(n){
 #'
 #' @return \code{TRUE} if object of classes \code{sf} and \code{data.frame}, \code{FALSE} otherwise.
 #'
-#' @examples
-#' wkb = structure(list("01010000204071000000000000801A064100000000AC5C1641",
-#' "01010000204071000000000000801A084100000000AC5C1441",
-#' "01010000204071000000000000801A044100000000AC5C1241",
-#' "01010000204071000000000000801A024100000000AC5C1841"), class = "WKB")
-#' map=sf::st_sf(id=c("a1", "b2", "c3", "d4"), sf::st_as_sfc(wkb, EWKB=TRUE))
-#' # is_sf(map) #TRUE
 is_sf <- function(m){
   clsf=class(m)
   if(!(length(clsf)==2 && clsf[1] == "sf" && clsf[2] == "data.frame")) {
@@ -210,13 +182,6 @@ is_sf <- function(m){
 #' @return \code{FALSE} on error, a vector with \code{m_name} and \code{n_name}
 #' if the lookup table is valid.
 #'
-#' @examples
-#' # lkptbl=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", "c", "d"))
-#' # netmap::is_lookup_table(lkptbl) #valid
-#' # lkptbl2=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", NA, "d"))
-#' # netmap::is_lookup_table(lkptbl2) #invalid, NA
-#' # lkptbl3=data.frame(id=c("a1", "b2", "c3", "d4"), name=c("a", "b", "b", "d"))
-#' # netmap::is_lookup_table(lkptbl3) #invalid, duplicates
 is_lookup_table <- function(lkp, m_name=NULL, n_name=NULL) {
   #are table and variable names valid?
   if(!is.data.frame(lkp) || ncol(lkp)<2) {

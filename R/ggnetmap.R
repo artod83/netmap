@@ -87,8 +87,6 @@ ggnetmap <- function(
 #' both in the lookup table and in \code{n}, the other of nodes in \code{n}
 #' present both in the lookup table and in \code{m}
 #'
-#' @examples
-#' #only used from within ggnetmap and ggcentrality
 check_network_sf <- function(
   n,
   m,

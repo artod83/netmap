@@ -7,12 +7,13 @@
 <!-- badges: end -->
 
 Netmap is a package that aids in the visualizations of network objects
-(made with the or the package) on geographical maps, imported through .
-Vertices in the network are linked with features in the object either
-directly if they share a common attribute or by an optional look-up
-table. The package either creates data frames that can be used in a plot
-or adds to features attributes like centrality indices or variables
-representing connections to a certain node.
+(made with the `network` or the `igraph` package) on geographical maps,
+imported through `sf`. Vertices in the network are linked with features
+in the `sf` object either directly if they share a common attribute or
+by an optional look-up table. The package either creates data frames
+that can be used in a `ggplot2` plot or adds to `sf` features attributes
+like centrality indices or variables representing connections to a
+certain node.
 
 ## Installation
 
@@ -85,3 +86,9 @@ ggplot() +
 ```
 
 <img src="man/figures/netmap-2.png" width="100%" />
+
+Just the network can be plotted as well without using `ggplot2`. For
+this purpose, a simple layout function,
+`network.layout.extract_coordinates`, is provided for use with
+`plot.network` or `plot.igraph`. A user-friendly wrapper, `netmap_plot`,
+is available.
