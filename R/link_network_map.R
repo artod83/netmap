@@ -46,11 +46,12 @@ link_network_map <- function(m, n, m_name, n_name="vertex.names"){
   #main check
   if(class(n) == "network") {
     res1=network::get.vertex.attribute(n, n_name)[network::get.vertex.attribute(n, n_name) %in% get(m_name, pos=m)]
+    res2=get(m_name, pos=m)[get(m_name, pos=m) %in% (network::get.vertex.attribute(n, n_name))]
   } else if (class(n) == "igraph") {
     res1=igraph::vertex_attr(n, n_name)[igraph::vertex_attr(n, n_name) %in% get(m_name, pos=m)]
+    res2=get(m_name, pos=m)[get(m_name, pos=m) %in% (igraph::vertex_attr(n, n_name))]
   }
 
-  res2=get(m_name, pos=m)[get(m_name, pos=m) %in% (network::get.vertex.attribute(n, n_name))]
   return(list(m=res2, n=res1))
 }
 
