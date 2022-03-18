@@ -29,12 +29,12 @@ link_network_map <- function(m, n, m_name, n_name="vertex.names"){
     message(paste0("Field ", m_name, " doesn't exist in sf object"))
     return(-1)
   }
-  if(class(n) == "network") {
+  if(inherits(n, "network")) {
     if (is.null(network::get.vertex.attribute(n, n_name, null.na=FALSE))) {
       message(paste0("Vertex attribute ", n_name, " doesn't exist in network object"))
       return(-1)
     }
-  } else if (class(n) == "igraph") {
+  } else if (inherits(n, "igraph")) {
     if (is.null(igraph::vertex_attr(n, n_name))) {
       message(paste0("Vertex attribute ", n_name, " doesn't exist in igraph object"))
       return(-1)
@@ -44,10 +44,10 @@ link_network_map <- function(m, n, m_name, n_name="vertex.names"){
   }
 
   #main check
-  if(class(n) == "network") {
+  if(inherits(n, "network")) {
     res1=network::get.vertex.attribute(n, n_name)[network::get.vertex.attribute(n, n_name) %in% get(m_name, pos=m)]
     res2=get(m_name, pos=m)[get(m_name, pos=m) %in% (network::get.vertex.attribute(n, n_name))]
-  } else if (class(n) == "igraph") {
+  } else if (inherits(n, "igraph")) {
     res1=igraph::vertex_attr(n, n_name)[igraph::vertex_attr(n, n_name) %in% get(m_name, pos=m)]
     res2=get(m_name, pos=m)[get(m_name, pos=m) %in% (igraph::vertex_attr(n, n_name))]
   }
@@ -97,13 +97,13 @@ link_network_map2 <- function(m, n, lkp, m_name=NULL, n_name=NULL){
     return(-1)
   }
 
-  if(class(n) == "network") {
+  if(inherits(n, "network")) {
     if (is.null(network::get.vertex.attribute(n, n_name, null.na=FALSE))) {
       message(paste0("Vertex attribute ", n_name, ", either set explicitly or
                    inherited from lookup table, doesn't exist in network object"))
       return(-1)
     }
-  } else if (class(n) == "igraph") {
+  } else if (inherits(n, "igraph")) {
     if (is.null(igraph::vertex_attr(n, n_name))) {
       message(paste0("Vertex attribute ", n_name, ", either set explicitly or
                    inherited from lookup table, doesn't exist in igraph object"))
@@ -114,14 +114,14 @@ link_network_map2 <- function(m, n, lkp, m_name=NULL, n_name=NULL){
   }
 
   #number of features present in the lookup table and in the network
-  if(class(n) == "network") {
+  if(inherits(n, "network")) {
     res=get(m_name, pos=m)[get(m_name, pos=m)
                            %in% get(m_name, pos=lkp)[get(n_name, pos=lkp)
                            %in% network::get.vertex.attribute(n, n_name)]]
     res2=network::get.vertex.attribute(n,
                          n_name)[network::get.vertex.attribute(n, n_name) %in% get(n_name,
                          pos=lkp)[get(m_name, pos=lkp) %in% get(m_name, pos=m)]]
-  } else if (class(n) == "igraph") {
+  } else if (inherits(n, "igraph")) {
     res=get(m_name, pos=m)[get(m_name, pos=m)
                            %in% get(m_name, pos=lkp)[get(n_name, pos=lkp)
                            %in% igraph::vertex_attr(n, n_name)]]

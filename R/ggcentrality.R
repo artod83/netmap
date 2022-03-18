@@ -51,7 +51,7 @@ ggcentrality <- function(
   }
 
   #calculate centrality measures
-  if(class(n2)=="network"){
+  if(inherits(n2, "network")){
     if(!rlang::is_installed("sna")) {
       stop(
         "Package \"sna\" must be installed to use this function.",
@@ -61,7 +61,7 @@ ggcentrality <- function(
     m2$degree=do.call(sna::degree, c(list(n2), par.deg))
     m2$betweenness=do.call(sna::betweenness, c(list(n2), par.bet))
     m2$closeness=do.call(sna::closeness, c(list(n2), par.clo))
-  } else if (class(n2)=="igraph") {
+  } else if (inherits(n2, "igraph")) {
     m2$degree=do.call(igraph::degree, c(list(n2), par.deg))
     m2$betweenness=do.call(igraph::betweenness, c(list(n2), par.bet))
     m2$closeness=do.call(igraph::closeness, c(list(n2), par.clo))
@@ -123,7 +123,7 @@ ggconn_area <- function(
   }
 
   #get id of vertex with n_name == id
-  if(class(n2)=="network"){
+  if(inherits(n2, "network")){
     if(!rlang::is_installed("sna")) {
       stop(
         "Package \"sna\" must be installed to use this function.",
@@ -136,7 +136,7 @@ ggconn_area <- function(
       neighb_list[network::get.neighborhood(n2, idv)]=1
     }
 
-  } else if (class(n2)=="igraph") {
+  } else if (inherits(n2, "igraph")) {
     idv=which(igraph::vertex_attr(n2, n_name)==id)
     neighb_list=rep(0, igraph::vcount(n2))
     if(length(idv)>0) {#vertex "id" found in graph

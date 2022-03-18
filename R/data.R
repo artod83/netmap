@@ -14,5 +14,5 @@
 #'   \item{Shape_area}{municipality area}
 #'   \item{geometry}{a MULTIPOLYGON}
 #' }
-#' @source \url{https://www.istat.it/it/archivio/104317}
+#' @source https://www.istat.it/it/archivio/104317
 "fvgmap"

@@ -72,9 +72,9 @@ netmap_plot <- function(
   m2=m2[match(features_ordered, get(m_name, pos=m2)),]
 
   #plot
-  if(class(n) == "network") {
+  if(inherits(n, "network")) {
     network::plot.network(n2, mode="extract_coordinates", layout.par=list(sf=m2), ...)
-  } else if (class(n) == "igraph") {
+  } else if (inherits(n, "igraph")) {
     igraph::plot.igraph(n2, layout=network.layout.extract_coordinates(n2, layout.par=list(sf=m2)))
   } else {
     stop("Network object is not of class network or igraph")

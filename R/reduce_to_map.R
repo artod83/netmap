@@ -21,7 +21,7 @@ reduce_to_map <- function(n, link, n_name){
   }
   if(!is_network(n)) stop("The network is not a network or igraph object")
 
-  if(class(n)=="network") {
+  if(inherits(n, "network")) {
     n_vertices=get("n", pos=get("gal", pos=n))
     if(length(link)>n_vertices) stop("Link vector exceeds network size")
 
@@ -37,7 +37,7 @@ reduce_to_map <- function(n, link, n_name){
     ids=(1:n_vertices)[!(network::get.vertex.attribute(n, n_name) %in% link)]
     network::delete.vertices(n2, ids)
     return(n2)
-  } else if(class(n)=="igraph") {
+  } else if(inherits(n, "igraph")) {
     n_vertices=igraph::gorder(n)
     if(length(link)>n_vertices) stop("Link vector exceeds network size")
 
