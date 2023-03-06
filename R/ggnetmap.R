@@ -63,7 +63,9 @@ ggnetmap <- function(
 
   #call fortify (it will automatically call either fortify.network or
   # fortify.igraph)
-  fortified_df=ggnetwork::fortify(n2, layout=coords, scale=scale, ...)
+  fortified_df=ggnetwork::fortify(n2, layout=coords, scale=scale,
+                                  stringsAsFactors=getOption("stringsAsFactors",
+                                                             default=FALSE), ...)
 
   #add m_name identifiers as well
   features_ordered2=data.frame(m=features_ordered, n=linked$n)
