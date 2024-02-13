@@ -8,7 +8,7 @@ Description: Represent 'network' or 'igraph' objects whose vertices can be repre
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.1
 URL: https://github.com/artod83/netmap
 BugReports: https://github.com/artod83/netmap/issues
 Imports: 

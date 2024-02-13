@@ -18,7 +18,6 @@
 #' convenient manipulation of \code{network} and \code{sf} objects,
 #' \code{\link{netmap_plot}}, are available.
 #'
-#' @docType package
 #' @name netmap
 NULL
 #> NULL

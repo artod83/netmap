@@ -12,7 +12,7 @@
 #' listed in \code{link}.
 #'
 reduce_to_map <- function(n, link, n_name){
-  if(!rlang::is_installed("network")) {
+  if(!rlang::is_installed("network") && !rlang::is_installed("igraph") ) {
     stop(
       "Either package \"network\" or package \"igraph\" must be installed to
       use this function.",
