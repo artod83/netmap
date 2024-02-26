@@ -162,7 +162,7 @@ is_network <- function(n){
 #'
 is_sf <- function(m){
   clsf=class(m)
-  if(!(length(clsf)==2 && clsf[1] == "sf" && clsf[2] == "data.frame")) {
+  if(!all(c("sf", "data.frame") %in% clsf)) {
     message(paste0("Invalid sf object supplied"))
     return(FALSE)
   } else {

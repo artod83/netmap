@@ -1,3 +1,7 @@
+# netmap 0.1.4
+Fixed a bug in is_sf where the function would fail if the object had additional
+class attributes beside sf and data.frame.
+
 # netmap 0.1.3
 Updated package documentation. Fixed a bug in reduce_to_map where the function
 would give an error if igraph was installed, but not network.

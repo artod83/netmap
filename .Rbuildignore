@@ -6,3 +6,4 @@ piano di lavoro
 script di prova per funzioni, import ecc.R
 cran-comments.md
 ^CRAN-SUBMISSION$
+^revdep$

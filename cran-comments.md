@@ -5,4 +5,4 @@ There were no ERRORs or WARNINGs or NOTEs.
 There are no downstream dependencies at the moment.
 
 ## Fixes
-This fixes the errors in package documentation notified on 2023-08-19.
+This fixes a bug in is_sf() where the sf object has additional class attributes.
